@@ -11,34 +11,4 @@ export default async function authRoutes(fastify: FastifyInstance) {
     
     fastify.post('logout', logoutUser)
 
-    fastify.get('/profile/user', {
-        preHandler: [
-            isLoggedIn,
-            checkRole(Role.USER)
-        ]
-    }, async (request: FastifyRequest, reply: FastifyReply) => {
-        const user = request.session.get('user')
-        return reply.send(user)
-    })
-
-    fastify.get('/profile/admin', {
-        preHandler: [
-            isLoggedIn,
-            checkRole(Role.ADMIN)
-        ]
-    }, async (request: FastifyRequest, reply: FastifyReply) => {
-        const user = request.session.get('user')
-        return reply.send(user)
-    })
-
-    fastify.get('/profile/owner', {
-        preHandler: [
-            isLoggedIn,
-            checkRole(Role.OWNER)
-        ]
-    }, async (request: FastifyRequest, reply: FastifyReply) => {
-        const user = request.session.get('user')
-        return reply.send(user)
-    })
-
 }
