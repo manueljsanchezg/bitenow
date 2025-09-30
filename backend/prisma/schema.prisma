@@ -1,0 +1,116 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:dev.db?mode=memory&cache=shared"
+}
+
+model User {
+  id            Int       @id @default(autoincrement())
+  createdAt     DateTime  @default(now())
+  name          String
+  surname       String
+  email         String    @unique
+  password      String
+  role          Role
+  country       String
+  zipCode       String
+  address       String
+  Restaurant    Restaurant[]
+  Order         Order[]
+}
+
+model Restaurant {
+  id            Int       @id @default(autoincrement())
+  createdAt     DateTime  @default(now())
+  name          String
+  description   String
+  email         String    @unique
+  phone         String    @unique
+  url           String
+  status        Status
+  country       String
+  zipCode       String
+  address       String
+  shippingCosts Decimal
+  owner         User      @relation(fields: [ownerId], references: [id], onDelete: Restrict)
+  ownerId       Int
+  category      RestaurantCategory @relation(fields: [categoryId], references: [id])
+  categoryId    Int
+  Product       Product[]
+}
+
+model RestaurantCategory {
+  id            Int       @id @default(autoincrement())
+  createdAt     DateTime  @default(now())
+  name          String
+  Restaurant    Restaurant[]
+}
+
+model Product {
+  id            Int       @id @default(autoincrement())
+  createdAt     DateTime  @default(now())
+  name          String
+  description   String
+  price         Decimal
+  availability  Boolean   @default(true)
+  category      ProductCategory @relation(fields: [categoryId], references: [id])
+  categoryId    Int
+  orderProducts OrderProduct[]
+  restaurant    Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Restrict)
+  restaurantId  Int
+}
+
+model ProductCategory {
+  id            Int       @id @default(autoincrement())
+  createdAt     DateTime  @default(now())
+  name          String
+  Product       Product[]
+}
+
+model OrderProduct {
+  id            Int       @id @default(autoincrement())
+  quantity      Int
+  price         Decimal
+  product       Product   @relation(fields: [productId], references: [id], onDelete: Restrict)
+  productId     Int
+  order         Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId       Int
+}
+
+model Order {
+  id            Int       @id @default(autoincrement())
+  createdAt     DateTime  @default(now())
+  startedAt     DateTime?
+  sentAt        DateTime?
+  deliveredAt   DateTime?
+  name          String
+  description   String
+  totalPrice    Decimal
+  shippingCosts Decimal
+  address       String
+  orderProducts OrderProduct[]
+  user          User      @relation(fields: [userId], references: [id], onDelete: Restrict)
+  userId        Int
+}
+
+enum Role {
+  ADMIN
+  OWNER
+  USER
+}
+
+enum Status {
+  ONLINE
+  OFFLINE
+  CLOSED
+  TEMPORARLY_CLOSED
+}
