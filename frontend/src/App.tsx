@@ -1,8 +1,14 @@
-import type { Component } from 'solid-js';
+import type { Component } from 'solid-js'
+import { Topbar } from './components/NavBar'
 
-const App: Component = () => {
+const App: Component = (props: any) => {
   return (
-    <p class="text-4xl text-green-700 text-center py-20">Hello tailwind!</p>
+    <>
+      <Topbar />
+      <main>
+        {props.children}
+      </main>
+    </>
   );
 };
 

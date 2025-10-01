@@ -1,0 +1,23 @@
+
+.login-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 300px);
+    width: 100vw;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center;
+    width: 80%;
+    max-width: 40rem;
+    gap: 2rem;
+}
+
+.login-input {
+    width: 100%;
+}

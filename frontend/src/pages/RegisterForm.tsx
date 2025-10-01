@@ -3,7 +3,7 @@ import { createForm } from '@tanstack/solid-form'
 import { Button, Form } from "solid-bootstrap"
 import './styles/LoginForm.css'
 
-export const LoginForm: Component = () => {
+export const Register: Component = () => {
     const form = createForm(() => ({
         defaultValues: {
             email: '',
